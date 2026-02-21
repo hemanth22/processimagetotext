@@ -26,7 +26,7 @@ jobs:
     
     - name: Run imagetotext.py
       run: |
-        python imagetotext.py
+        python imagetotext.py images.png
     
     - name: Upload results
       if: always()
