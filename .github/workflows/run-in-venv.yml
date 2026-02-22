@@ -33,7 +33,9 @@ jobs:
           source .venv/bin/activate
           python -c "import importlib, sys; importlib.import_module('imagetotext'); print('import ok', sys.version)"
 
-      - name: Optional: run script (non-failing)
+      - name: Optional run script (non-failing)
         run: |
           source .venv/bin/activate
-          if [ -f imagetotext.py ]; then python imagetotext.py || true; fi
+          if [ -f imagetotext.py ]; then
+            python imagetotext.py || true
+          fi
