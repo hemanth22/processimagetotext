@@ -1,0 +1,39 @@
+name: Run in venv
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  venv-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Create virtual environment
+        run: python -m venv .venv
+
+      - name: Install dependencies inside venv
+        run: |
+          source .venv/bin/activate
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Smoke test - import package/module
+        run: |
+          source .venv/bin/activate
+          python -c "import importlib, sys; importlib.import_module('imagetotext'); print('import ok', sys.version)"
+
+      - name: Optional: run script (non-failing)
+        run: |
+          source .venv/bin/activate
+          if [ -f imagetotext.py ]; then python imagetotext.py || true; fi
